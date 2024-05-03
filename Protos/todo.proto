@@ -1,0 +1,44 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+option csharp_namespace = "GrpcDemo";
+
+package todo;
+
+// The manage ToDo list
+service ToDoList {
+  // Create Todo Item
+  rpc InsertTodo (ToDoRequest) returns (ToDoItem);
+  // Update Todo Item
+  rpc UpdateTodo (ToDoItem) returns (ToDoAcknowledgement);
+  // Delete Todo Item
+  rpc DeleteTodo (ToDoId) returns (ToDoAcknowledgement);
+  // List Todo Items
+  rpc ListToDos (google.protobuf.Empty) returns (ToDoListItems);
+}
+
+// ToDo item without the identifier (before it is saved to the database)
+message ToDoRequest {
+  string name = 1;
+  string description = 2;
+  bool complete = 3;
+}
+
+// ToDo item without the identifier
+message ToDoItem {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool complete = 4;
+}
+
+// ToDoId the id of a ToDoItem
+message ToDoId {
+  string id = 1;
+}
+
+message ToDoListItems {repeated ToDoItem todos = 1;}
+
+// The response message with true if success
+message ToDoAcknowledgement {
+  bool result = 1;
+}
